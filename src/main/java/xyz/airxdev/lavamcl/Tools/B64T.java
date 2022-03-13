@@ -1,6 +1,11 @@
 package xyz.airxdev.lavamcl.Tools;
 
-import java.util.Base64;
+//import java.util.Base64;
+
+
+import org.apache.commons.codec.binary.Base64;
+
+import java.util.Arrays;
 
 public class B64T {
     /**
@@ -10,7 +15,8 @@ public class B64T {
      */
     public static String Encode(String str) {
         try {
-            return Base64.getEncoder().encodeToString(str.getBytes("UTF-8"));
+            return new String(Base64.encodeBase64(str.getBytes("UTF-8")));
+            //return Base64.getEncoder().encodeToString(str.getBytes("UTF-8"));
         } catch (Exception e) {
             e.printStackTrace();
             return "";
@@ -23,7 +29,7 @@ public class B64T {
      * @return
      */
     public static String Decode(String str) {
-        byte[] result = Base64.getDecoder().decode(str.getBytes());
+        byte[] result = Base64.decodeBase64(str.getBytes());
         return new String(result);
     }
 }
