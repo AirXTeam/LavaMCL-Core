@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 public class Main {
     public static Logger Log = Logger.getLogger("Main");
     public static boolean SafeMode = false;
-    public static String ConfigFile = "LMCLConfig.json";
+    public static String ConfigFile = "LMCLConfig.ini";
     //代理相关功能
     public static boolean UseHttpProxy = false;
     public static String Py_HttpHost = "127.0.0.1";
