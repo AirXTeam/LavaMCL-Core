@@ -102,13 +102,14 @@ public class Main {
                 }
             }
 
-            StartLoader.Start();
+
 
 
 
 
 
         }
+        StartLoader.Start();
         //System.out.println(SafeMode);
         //System.out.println(ConfigFile);
         //System.out.println(B64T.Encode("test")); //测试Base64是否正常

@@ -1,6 +1,6 @@
 package xyz.airxdev.lavamcl;
 
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 import org.yaml.snakeyaml.Yaml;
 import xyz.airxdev.lavamcl.DSApi.BMCLAPI;
 import xyz.airxdev.lavamcl.DSApi.MCBBS;
@@ -15,27 +15,45 @@ import static java.lang.System.exit;
 
 public class StartLoader {
     public static File CF = new File(Main.ConfigFile);
-    public static OutputStream CFw;
-    public static InputStream CFr;
-    //public static JSONObject JB = new JSONObject();
-    public static Properties Pro = new Properties();
+    public static RandomAccessFile CFw;
+    public static FileInputStream CFr;
+    public static JSONObject JB = new JSONObject();
+    //public static Properties Pro = new Properties();
     public static void Start(){
-
         try {
-            CFw = new FileOutputStream(CF);
-            CFr = new FileInputStream(CF);
+            String C_DS = "";
             if(!CF.exists()){
                 if(CF.isDirectory()){
                     CF.delete();
                 }
                 CF.createNewFile();
             }
+            /*CFw = new FileOutputStream(CF);*/
+            CFr = new FileInputStream(CF);
+            //CFw = new FileOutputStream(CF);
+            CFw = new RandomAccessFile(CF, "rw");
+            byte[] readtemp = {};
+            //System.out.println(CF.getPath());
+            readtemp = CFr.readAllBytes();
+            /*System.out.println();
+            System.out.println(readtemp.length);*/
+            JB = JSONObject.parseObject(new String(readtemp));
+            System.out.println(JSONObject.toJSONString(JB));
+            if(JB != null){
+                JB.put("DownloadServer","Mojang");
+                Save();
+                C_DS = JB.getString("DownloadServer");
+            }else{
+                C_DS = "Mojang";
+            }
+
+            /*
             Pro.load(CFr);
             String C_DS = Pro.getProperty("Download.Server");
             if(C_DS == null){
                 Pro.setProperty("Download.Server","Mojang");
                 C_DS = Pro.getProperty("Download.Server");
-            }
+            }*/
             if(C_DS.equals("Mojang")){
                 Main.DownloadServer = MoJang.Config;
             }else if(C_DS.equals("MCBBS")){
@@ -46,7 +64,9 @@ public class StartLoader {
                 Main.DownloadServer = MoJang.Config;
             }
 
-            System.out.println(Versions.GetVersionList(""));
+            //String DT = Versions.GetVersionList(Versions.Type_Release);
+            System.out.println("DT");
+
         } catch (IOException e) {
             e.printStackTrace();
             exit(1);
@@ -55,7 +75,7 @@ public class StartLoader {
 
     public static boolean Save(){
         try {
-            Pro.store(CFw,"Data");
+            CFw.write(JSONObject.toJSONString(JB).getBytes());
             return true;
         } catch (IOException e) {
             e.printStackTrace();
