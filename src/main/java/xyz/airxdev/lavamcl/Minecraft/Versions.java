@@ -50,4 +50,37 @@ public class Versions {
 
         }
     }
+
+    public static String GetVersionList_All(){
+        String AD = GetPost.Get(Main.DownloadServer[0]);
+        JSONObject JS = new JSONObject();
+        List lt = new ArrayList<>();
+        try{
+            JS = JSONObject.parseObject(AD);
+            JSONArray version = (JSONArray) JS.get("versions");
+            String ReString = "";
+            ReString = ReString + "#FINISH\n";
+            for (int i = 0; i < version.size(); i++) {
+                JSONObject tjb = version.getJSONObject(i);
+                String id = tjb.getString("id");
+                String type = tjb.getString("type");
+                String url = tjb.getString("url");
+                String time = tjb.getString("time");
+                String releaseTime = tjb.getString("releaseTime");
+                    String tempadd = id + "$" +
+                            type + "$" + B64T.Encode(url) + "$" +
+                            time + "$" + releaseTime;
+                    ReString = ReString + tempadd + "\n";
+
+            }
+            ReString = ReString + "#END";
+
+            return ReString;
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return "#ERROR\n" + B64T.Encode(ex.toString()) +
+                    "\n" + "#END";
+
+        }
+    }
 }

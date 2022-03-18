@@ -33,6 +33,9 @@ public class Main {
 
     public static String[] DownloadServer = MoJang.Config;
 
+    public static String Web_Host = "::0";
+    public static int Web_Port = 39860;
+
     public static void main(String[] args) {
         for(String T_Str : args){
             if(T_Str.equals("--safe-mode")){
@@ -40,6 +43,16 @@ public class Main {
             }
             if(T_Str.equals("--config")){
                 ConfigFile = B64T.Decode(args[Arrays.binarySearch(args,"--config") + 1]);
+            }
+            if(T_Str.equals("--lhost")){
+                Web_Host = B64T.Decode(args[Arrays.binarySearch(args,"--lhost") + 1]);
+            }
+            if(T_Str.equals("--lport")){
+                int MR_Port = Web_Port;
+                Web_Port = Integer.parseInt(args[Arrays.binarySearch(args,"--lport") + 1]);
+                if(Web_Port == 0){
+                    Web_Port = MR_Port;
+                }
             }
             if(T_Str.equals("--use-proxy-http")){
                 try {

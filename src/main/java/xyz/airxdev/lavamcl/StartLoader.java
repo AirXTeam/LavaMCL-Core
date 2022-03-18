@@ -6,6 +6,7 @@ import xyz.airxdev.lavamcl.DSApi.BMCLAPI;
 import xyz.airxdev.lavamcl.DSApi.MCBBS;
 import xyz.airxdev.lavamcl.DSApi.MoJang;
 import xyz.airxdev.lavamcl.Minecraft.Versions;
+import xyz.airxdev.lavamcl.Web.HTTPServer;
 
 import java.io.*;
 import java.util.Map;
@@ -38,14 +39,13 @@ public class StartLoader {
             /*System.out.println();
             System.out.println(readtemp.length);*/
             JB = JSONObject.parseObject(new String(readtemp));
-            System.out.println(JSONObject.toJSONString(JB));
+            //System.out.println(JSONObject.toJSONString(JB));
             if(JB != null){
-                JB.put("DownloadServer","Mojang");
-                Save();
                 C_DS = JB.getString("DownloadServer");
             }else{
                 C_DS = "Mojang";
             }
+
 
             /*
             Pro.load(CFr);
@@ -64,8 +64,13 @@ public class StartLoader {
                 Main.DownloadServer = MoJang.Config;
             }
 
-            //String DT = Versions.GetVersionList(Versions.Type_Release);
-            System.out.println("DT");
+            String DT = Versions.GetVersionList(Versions.Type_Release);
+            System.out.println(DT);
+            HTTPServer HSs = new HTTPServer();
+            HSs.InitWebServer();
+            HSs.BuildWebServer();
+            HSs.StartWebServer();
+
 
         } catch (IOException e) {
             e.printStackTrace();
